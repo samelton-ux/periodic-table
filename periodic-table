@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Periodic Table</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f7f7f7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h1 {
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .table-container {
+    overflow: auto;
+    width: 100%;
+    max-width: 1200px;
+    height: 80vh;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    box-sizing: border-box;
+  }
+
+  .periodic-table {
+    display: grid;
+    grid-template-columns: repeat(18, 60px);
+    grid-auto-rows: 60px;
+    gap: 5px;
+  }
+
+  .element {
+    background: #e0e0e0;
+    border-radius: 6px;
+    border: 1px solid #999;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .element:hover {
+    transform: scale(1.1);
+    background: #a0d6f7;
+  }
+
+  .element span {
+    display: block;
+  }
+
+  /* Element type colors */
+  .nonmetal { background: #fdd; }
+  .noble-gas { background: #ddf; }
+  .alkali-metal { background: #fdb; }
+  .alkaline-earth { background: #dfd; }
+  .metalloid { background: #ffd; }
+  .halogen { background: #fdf; }
+  .transition-metal { background: #ddd; }
+  .lanthanide, .actinide { background: #fcc; }
+
+  #info {
+    margin: 15px;
+    padding: 15px;
+    width: 95%;
+    max-width: 1200px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-align: left;
+    box-sizing: border-box;
+  }
+</style>
+</head>
+<body>
+
+<h1>Interactive Periodic Table</h1>
+
+<div class="table-container">
+  <div class="periodic-table" id="table"></div>
+</div>
+
+<div id="info">Tap an element to see details!</div>
+
+<script>
+  const elements = [
+    {symbol:'H', name:'Hydrogen', number:1, group:1, period:1, type:'nonmetal'},
+    {symbol:'He', name:'Helium', number:2, group:18, period:1, type:'noble-gas'},
+    {symbol:'Li', name:'Lithium', number:3, group:1, period:2, type:'alkali-metal'},
+    {symbol:'Be', name:'Beryllium', number:4, group:2, period:2, type:'alkaline-earth'},
+    {symbol:'B', name:'Boron', number:5, group:13, period:2, type:'metalloid'},
+    {symbol:'C', name:'Carbon', number:6, group:14, period:2, type:'nonmetal'},
+    {symbol:'N', name:'Nitrogen', number:7, group:15, period:2, type:'nonmetal'},
+    {symbol:'O', name:'Oxygen', number:8, group:16, period:2, type:'nonmetal'},
+    {symbol:'F', name:'Fluorine', number:9, group:17, period:2, type:'halogen'},
+    {symbol:'Ne', name:'Neon', number:10, group:18, period:2, type:'noble-gas'},
+    // You can continue adding all 118 elements here...
+  ];
+
+  const table = document.getElementById('table');
+  const info = document.getElementById('info');
+
+  for (let period = 1; period <= 7; period++) {
+    for (let group = 1; group <= 18; group++) {
+      const el = elements.find(e => e.period === period && e.group === group);
+      const cell = document.createElement('div');
+      cell.classList.add('element');
+      if (el) {
+        cell.classList.add(el.type);
+        cell.innerHTML = `<span><strong>${el.symbol}</strong></span><span>${el.number}</span>`;
+        cell.onclick = () => {
+          info.innerHTML = `<h2>${el.name} (${el.symbol})</h2>
+                            <p>Atomic Number: ${el.number}</p>
+                            <p>Group: ${el.group}, Period: ${el.period}</p>
+                            <p>Type: ${el.type.replace('-', ' ')}</p>`;
+        }
+      }
+      table.appendChild(cell);
+    }
+  }
+</script>
+
+</body>
+</html>
